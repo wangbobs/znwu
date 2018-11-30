@@ -35,9 +35,10 @@ void path_17();
 void path_18();
 void passoneline();//寻单线
 void passtowline();//寻双线
-void Back_starting_point(void);//回到原点
+void blindtowpath(u32 distance);//双线盲走
+void blindonepath(u32 distance);//单线盲走
+void blindtowpathbackwards(u32 distance);//倒退
 //870舵机张开，1570舵机合着
-void test(void);//测试函数
 
      extern  u16 data2;
      u8 buf[10]="0000000000";
@@ -53,45 +54,33 @@ int main(void)
 	u8 t;
 	init();	
 
-	
-	if(buf5[0]=='1')
-	{	
-	Servo_Mode_Config(870,1000,1499,1499);
-    delay_s(1.7);
-	Servo_Mode_Config(870,1500,1499,1499);
-		
-	}
+////**过第一条横线**/	
+//	for(;;)
+//		{
+//			if( !line2 &line3& !line4 )forward(200); 				//*016*	
+//			else if( line1&line2&line3&line4&line5 ){break;}//11111	
+//			else if( line5& !line2 )turn_right(250); //
+//			else if(line1&!line4 )turn_left(250);//
+//			else forward(200);
+//		}
+//		for(i=0;i<480;i++)forward(200); 
+//		delay_ms(250);	
+//		turn_right_90(250);
+///**过第一条纵线**/	
+//passtowline();
+///**过第二条纵线**/
+//passtowline();
+///**过第三条纵线**/
+//passtowline();
+///**过第四条纵线**/
+//passtowline();
+///**过第五条纵线**/
+//passtowline();	
 
-////////************************************过第一条横线********************************************/	
-	for(;;)
-		{
-			if( !line2 &line3& !line4 )forward(200); 				//*016*	
-			else if( line1&line2&line3&line4&line5 ){break;}//11111	
-			else if( line5& !line2 )turn_right(250); //
-			else if(line1&!line4 )turn_left(250);//
-			else forward(200);
-		}
-		for(i=0;i<480;i++)forward(200); 
-		delay_ms(250);	
-		turn_right_90(250);
-	 
-		
-	//掉过头,准备过第一条纵线
-/************************************过第一条纵线********************************************/	
-passtowline();
-/************************************过第二条纵线********************************************/
-passtowline();
-/************************************过第三条纵线********************************************/
-passtowline();
-/************************************过第四条纵线********************************************/
-passtowline();
-/************************************过第五条纵线********************************************/
-passtowline();	
-
-/************************************过第六条纵线********************************************/
+/****过第六条纵线**/
 passtowline();
 delay_ms(250);	
-/////////************************************右转识别二维码********************************************/		
+////************************************右转识别二维码********************************************/		
  turn_left_90(250);
  delay_ms(250);
 //////////***********************************过横线二*********************************************/		
@@ -118,21 +107,8 @@ delay_ms(250);
 ///***********************************返回过第五条纵线*********************************************/		
 passtowline();
 //***********************************盲走一段距离*********************************************/			
-		for(i=0;i<1500;i++)
-   		{
-		    if( line2 & !line3& line4 )forward(200);
-			else if(!line4&!line5)turn_left(250);
-			else if(!line1&!line2)turn_right(250);		
-			else if(line3& !line2)turn_right(250); //
-			else if(!line4&line3)turn_left(250);//
-			else if(line5& !line2)turn_right(250); //
-			else if(line1&!line4)turn_left(250);//	
-
-			else forward(200);	
-		}
-
-	
-///////////***********************************面向物体识别颜色*********************************************/	
+blindtowpath(1000);
+//***********************************面向物体识别颜色*********************************************/	
 	turn_left_90(250);
 	delay_ms(250);
 	Servo_Mode_Config(870,1000,1499,1499);
@@ -140,383 +116,66 @@ passtowline();
 	Servo_Mode_Config(870,1500,1499,1499);
     for(i=0;i<500;i++)forward(200);
     delay_ms(250);
-    Servo_Mode_Config(1500,1500,1499,1499);
+	Servo_Mode_Config(1500,1500,1499,1499);
 	buf5[0]=yanse()+'0';
-//    OLED_ShowString(4,4,buf5,16);
-//	if(buf5[0]==buf3[0])	
-//	{	switch(buf5[0])	
-//		{
-//		case '1':path_1();break;
-//		case '2':path_2();break;
-//		case '3':path_3();break;	
-//		}
-//		
-//	}
-//		
-//		
-//	 
-//if(buf5[0]==buf3[0])
-//	{
-//if(buf5[0]=='1')
-//		{
-//	
-//		
-//	}
-//		
-//	
-//if(buf5[0]=='2')
-//{
-//		for(i=0;i<30;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-////////***********************************直走过纵线4*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
+	if(buf5[0]==buf3[0])	
+	{
 
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-//			stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
+		switch(buf5[0])	
+		{
+		case '1':path_1();break;
+		case '2':path_2();break;
+		case '3':path_3();break;
+        default:break;			
+		}
+		
+		
+		
+//		switch(buf5[0])	
 //		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
+//		case '1':path_11();break;
+//		case '2':path_14();break;
+//		case '3':path_17();break;
+//        default:break;			
 //		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<28;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
-//	
-//if(buf5[0]=='3')
-//	{
-//	for(i=0;i<30;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_left_90(40);
-//	   stop();
-//      delay_ms(200);
-////////***********************************直走过纵线5*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-//	stop();delay_ms(250);
-//     turn_left_90(40);
-//	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<28;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
-//	
-
-//}
-//	
-
-//else
-//{
-//	/////////***********************************后退左转*********************************************/
-//		
-//    for(i=0;i<30;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);	
-//      
-//	
-/////////***********************************直走过纵线4*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//     for(i=0;i<7;i++)forward(40);
-///////////***********************************左转*********************************************/
-
-//	stop();delay_ms(250);
-//     turn_left_90(40);
-//	   stop();
-//      delay_s(1);
-//		
-//    for(i=0;i<38;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(250);
-//	Servo_Mode_Config(2000,2000,1499,1499);
+///***********************************面向物体识别颜色*********************************************/		
 //	buf5[1]=yanse()+'0';
-//    OLED_ShowString(8,0,buf5,16);
-//	
-//if(buf5[1]==buf3[0])
-//	{
-//		if(buf5[1]=='1')
+//    OLED_ShowString(4,4,buf5,16);
+//     /*判断是第二个*/
+//  if(buf5[1]==buf3[1])		
+//	 {	switch(buf5[1])
 //		{
+//        case '1':path_4();break;
+//		case '2':path_5();break;
+//		case '3':path_6();break;
+//        default:break;
+//		}
+//		switch(buf5[1])	
+//		{
+//		case '1':path_12();break;
+//		case '2':path_15();break;
+//		case '3':path_18();break;
+//        default:break;	
+//		}
+//        switch(buf3[2])
+//		{
+//	    case '1':path_7();break;
+//		case '2':path_8();break;
+//		case '3':path_9();break;
+//        default:break;
 //			
-//	for(i=0;i<35;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-//			
-////////***********************************直走过纵线4*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<25;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	
-//		
-//	}
-//		
-//	
-//	if(buf5[1]=='2')
-//{
-//	for(i=0;i<30;i++)backwards(70);
-//	stop();
-//   delay_ms(250);
-//   turn_left_180(40);stop();
-//   delay_ms(200);
-
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<35;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
-//	
-//	if(buf5[1]=='3')
-//	{
-//	for(i=0;i<30;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_left_90(40);
-//	   stop();
-//      delay_ms(200);
-////////***********************************直走过纵线5*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-//	stop();delay_ms(250);
-//     turn_left_90(40);
-//	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<35;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
-//	
-
-//}
-//	
-//else
-//	{
-///////////***********************************后退左转*********************************************/
-//		
-//    for(i=0;i<30;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);	
-//      
-//	
-//for(i=0;i<28;i++)													//走向物块前方
+//		}			
+	}
+//	 else
+//	 {
+//		 //判断不是第二个，直接抓取第三个，这三个颜色也就知道了
+//		  for(i=0;i<20;i++)backwards(70);
+//	      stop();delay_ms(250);
+//          turn_right_90(40);
+//	      stop();
+//          delay_ms(200);
+///////***********************************盲走一段距离*********************************************/			
+//   for(i=0;i<35;i++)													//走向物块前方
 //		{
 //			if( line2 & !line3& line4 )forward(40);
 //		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
@@ -532,145 +191,45 @@ passtowline();
 //		stop();
 //		delay_ms(250);
 //	
-///////////***********************************面向物体识别颜色*********************************************/	
+///***********************************面向物体识别颜色*********************************************/	
 //	turn_left_90(40);
 //	stop();
 //	delay_ms(250);
-//    for(i=0;i<25;i++)forward(40);stop();delay_ms(250);
+//    for(i=0;i<15;i++)forward(40);stop();delay_ms(250);
 //	stop();
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1);
-//	buf5[2]=yanse()+'0';
-//    OLED_ShowString(8,0,buf5,16);
-//		
-//		if(buf5[2]=='1')
-//		{
-//			
-//	for(i=0;i<35;i++)backwards(70);
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-//			
-////////***********************************直走过纵线3*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-
-//	stop();delay_ms(250);
-//     turn_right_90(40);
-//	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<35;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	
-//		
-//	}
-//		
-//	
-//	if(buf5[1]=='2')
-//{
-//	for(i=0;i<30;i++)backwards(70);
-//	stop();
-//   delay_ms(250);
-//   turn_left_90(40);stop();
-//   delay_ms(200);
-////////***********************************直走过纵线4*********************************************/
-//		for(;;)//过出发区纵线-1
-//		{
-//			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
-//			else if(!line4&!line5)turn_left(40);
-//			else if(!line1&!line2)turn_right(40);		
-//			else if(line3& !line2)turn_right(40); //
-//			else if(!line4&line3)turn_left(40);//
-//			else if(line5& !line2)turn_right(40); //
-//			else if(line1&!line4)turn_left(40);//	
-
-//			else forward(40);	
-//		}
-//       for(i=0;i<7;i++)forward(40);
-//		stop();
-//   delay_ms(250);
-//   turn_left_90(40);stop();
-//   delay_ms(200);
-//		
-/////***********************************过横线二*********************************************/	
-//		
-//		for(;;)													
-//		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
-//		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<35;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
-//	
-//if(buf5[1]=='3')
+//	Servo_Mode_Config(1500,2200,1499,1499);
+//	switch(buf3[1])
 //	{
-//	for(i=0;i<30;i++)backwards(70);
+//		case '1':path_7();break;
+//		case '2':path_8();break;
+//		case '3':path_9();break;
+//        default:break;	
+//	}
+//	switch(buf3[1])
+//	{
+//		case '1':path_11();j=2;break;
+//		case '2':path_14();j=2;break;
+//		case '3':path_17();j=2;break;
+//        default:break;	
+//	}
+//	
+//		switch(buf3[2])
+//	{
+//		case '1':path_4();break;
+//		case '2':path_5();break;
+//		case '3':path_6();break;
+//        default:break;	
+//	}	
+//	
+//	 }
+//		
+//	}
+//		
+
+//	
+//	else
+//{
+//	for(i=0;i<20;i++)backwards(70);
 //	stop();delay_ms(250);
 //     turn_left_90(40);
 //	   stop();
@@ -689,12 +248,104 @@ passtowline();
 
 //			else forward(40);	
 //		}
-//       for(i=0;i<7;i++)forward(40);
-////////***********************************直走过纵线5*********************************************/
-//		for(;;)//过出发区纵线-1
+//       for(i=0;i<d4;i++)forward(40);
+//	   stop();delay_ms(250);
+//       turn_left_90(40);
+//	   stop();
+//       delay_ms(200);
+//	for(i=0;i<15;i++)forward(40);stop();delay_ms(250);
+//	stop();
+//	Servo_Mode_Config(1500,2200,1499,1499);
+//    delay_s(1);
+//	buf5[1]=yanse()+'0';
+//    OLED_ShowString(4,4,buf5,16);
+//	if(buf5[1]==buf3[0])	
+//	{	
+//		
+//		switch(buf5[1])
+//		{
+//		case '1':path_4();break;
+//		case '2':path_5();break;
+//		case '3':path_6();break;
+//        default:break;
+//		}
+//		if(buf5[0]==buf3[1])
+//		{
+//		switch(buf3[0])
+//			{
+//		case '1':path_10();break;
+//		case '2':path_13();break;
+//		case '3':path_16();break;
+//        default:break;
+//			}
+//		switch(buf3[1])
+//			{
+//		case '1':path_4();break;
+//		case '2':path_5();break;
+//		case '3':path_6();break;
+//        default:break;
+//			}
+//		switch(buf3[1])
+//			{
+//		case '1':path_12();break;
+//		case '2':path_15();break;
+//		case '3':path_18();break;
+//        default:break;
+//			}
+//		switch(buf3[2])
+//		{
+//		case '1':path_7();break;
+//		case '2':path_8();break;
+//		case '3':path_9();break;
+//        default:break;
+//		}
+//		}
+//		else
+//     
+//	 {
+//		switch(buf3[0])
+//			{
+//		case '1':path_12();break;
+//		case '2':path_15();break;
+//		case '3':path_18();break;
+//        default:break;
+//			}
+//		switch(buf3[1])
+//			{
+//		case '1':path_7();break;
+//		case '2':path_8();break;
+//		case '3':path_9();break;
+//        default:break;
+//			}
+//		switch(buf3[1])
+//			{
+//		case '1':path_10();break;
+//		case '2':path_13();break;
+//		case '3':path_16();break;
+//        default:break;
+//			}
+//		switch(buf3[2])
+//		{
+//		case '1':path_1();break;
+//		case '2':path_2();break;
+//		case '3':path_3();break;
+//        default:break;
+//		}
+//	 }
+//	}
+//   else
+//	 {
+//		//前两个都不是第一个，直接抓取第三个，此时已经识别了两种颜色
+//    for(i=0;i<20;i++)backwards(70);
+//	stop();delay_ms(250);
+//     turn_right_90(40);
+//	   stop();
+//      delay_ms(200);
+// /////***********************************盲走一段距离*********************************************/			
+//   for(i=0;i<35;i++)													//走向物块前方
 //		{
 //			if( line2 & !line3& line4 )forward(40);
-//		   else if(line2&line3&line4 ){stop();break;}//11111
+//		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
 //			else if(!line4&!line5)turn_left(40);
 //			else if(!line1&!line2)turn_right(40);		
 //			else if(line3& !line2)turn_right(40); //
@@ -704,49 +355,79 @@ passtowline();
 
 //			else forward(40);	
 //		}
-//       for(i=0;i<7;i++)forward(40);
-//	stop();delay_ms(250);
-//     turn_left_90(40);
+//		stop();
+//		delay_ms(250);
+//       turn_left_90(40);
 //	   stop();
-//      delay_ms(200);
-/////***********************************过横线二*********************************************/	
+//       delay_ms(200);
+//	 for(i=0;i<15;i++)forward(40);stop();delay_ms(250);
+//	stop();
+//	Servo_Mode_Config(1500,2200,1499,1499);
 //		
-//		for(;;)													
+//		switch(buf3[0])
 //		{
-//			if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//			else if( line2&line3&line4 ){stop();break;}//11111
-//			else if( line1 )turn_left(40); //
-//			else if( line1& line2 )turn_left(40); //
-//			else if( line2& line3 )turn_left(40); //
-//			else if( line5 )turn_right(40); //
-//			else if( line4& line5 )turn_right(40); //
-//			else if(line3&line4 )turn_right(40);
-//			else forward(40);
+//		case '1':path_7();break;
+//		case '2':path_8();break;
+//		case '3':path_9();break;
+//        default:break;
 //		}
-//		for(i=0;i<2;i++)forward(40);	
-/////***********************************盲走*********************************************/	
-//       for(i=0;i<35;i++)forward(40);
-//	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
-//	    else if( line2&line3&line4 )forward(40); //11111
-//		else if( line1 )turn_left(40); //
-//		else if( line1& line2 )turn_left(40); //
-//		else if( line2& line3 )turn_left(40); //
-//		else if( line5 )turn_right(40); //
-//		else if( line4& line5 )turn_right(40); //
-//		else if(line3&line4 )turn_right(40);
-//		else forward(40);	
-//    }
-//	stop();delay_ms(100);
-//	Servo_Mode_Config(2000,2200,1499,1499);
-//    delay_s(1.65);	
-//	Servo_Mode_Config(2000,2000,1499,1499);	
-//	}
+//		if(buf5[0]==buf3[1])
+//	  {
+//		switch(buf3[0])
+//		{
+//		case '1':path_10();break;
+//		case '2':path_13();break;
+//		case '3':path_16();break;
+//        default:break;
+//		}
+//		switch(buf3[1])
+//		{
+//		case '1':path_1();break;
+//		case '2':path_2();break;
+//		case '3':path_3();break;
+//        default:break;
+//		}
+//		switch(buf3[1])
+//		{
+//		case '1':path_11();break;
+//		case '2':path_14();break;
+//		case '3':path_17();break;
+//        default:break;
+//		}		
 //		
+//		}
+//       
+//  else
+//       {
+//		   switch(buf3[0])
+//		{
+//		case '1':path_12();break;
+//		case '2':path_15();break;
+//		case '3':path_18();break;
+//        default:break;
+//		}
+//		switch(buf3[1])
+//		{
+//		case '1':path_4();break;
+//		case '2':path_5();break;
+//		case '3':path_6();break;
+//        default:break;
+//		}
+//		switch(buf3[1])
+//		{
+//		case '1':path_10();break;
+//		case '2':path_13();break;
+//		case '3':path_16();break;
+//        default:break;
+//		}		
+//	   }
+//		 
+//	 }
+//	
+//	
+//	
 //	}
-
-
-//}
-	}
+}
 
 void init(void)//初始化函数
 {
@@ -807,7 +488,8 @@ int yanse()
 /*****************************************************
          1               2               3
 
-
+//passoneline();
+//passtowline();
 
 
 
@@ -817,6 +499,1188 @@ int yanse()
          6               5               4
 
 ******************************************************/
+
+/*************************路径4->1****************************/
+void path_1()
+{
+	
+	
+	  blindtowpathbackwards(500);//倒退
+      delay_ms(250);
+      turn_right_90(250);
+      delay_ms(200);
+			
+//////***********************************直走过纵线4*********************************************/
+passtowline();
+//////***********************************直走过纵线3*********************************************/
+passtowline();
+delay_ms(250);
+turn_right_90(250);
+delay_ms(200);
+///***********************************过横线二*********************************************/	
+passoneline();
+///***********************************盲走*********************************************/	
+blindonepath(1000);
+	delay_ms(100);
+	Servo_Mode_Config(1500,2000,1499,1499);
+    delay_s(1.7);	
+	Servo_Mode_Config(870,1500,1499,1499);
+	
+}
+/*************************路径4->2****************************/
+void path_2()
+{
+	int i=0;
+	
+	   for(i=0;i<20;i++)backwards(70);
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+			
+//////***********************************直走过纵线4*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	  stop();delay_ms(250);
+     turn_right_90(40);
+	   stop();
+      delay_ms(200);
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+		
+}
+/*************************路径4->3****************************/
+void path_3()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_left_90(40);
+	   stop();
+      delay_ms(200);
+			
+//////***********************************直走过纵线5*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+			else forward(40);	
+		}
+       for(i=0;i<3;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+		
+///***********************************过横线二*********************************************/			
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+		
+		
+}
+/*************************路径5->1****************************/
+void path_4()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_right_90(40);
+	   stop();
+      delay_ms(200);
+			
+//////***********************************直走过纵线3*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	
+		if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+//	Servo_Mode_Config(2000,2200,1499,1499);
+//    delay_s(1.65);	
+//	Servo_Mode_Config(1500,1500,1499,1499);	
+		
+		
+}
+/********************************************路径5->2****************************************************/
+void path_5()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_left_180(40);
+	   stop();
+      delay_ms(200);
+	///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+		
+	
+	
+}
+/*************************路径5->3****************************/
+void path_6()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_left_90(40);
+	   stop();
+      delay_ms(200);
+			
+//////***********************************直走过纵线5*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+}
+/*************************路径6->1****************************/
+void path_7()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_right_90(40);
+	   stop();
+      delay_ms(200);
+/////***********************************直走过纵线5*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+	
+	
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+}
+/*************************路径6->2****************************/
+
+void path_8()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_left_90(40);
+	   stop();
+      delay_ms(200);
+			
+//////***********************************直走过纵线4*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+}
+/*************************路径6->3****************************/
+void path_9()
+{
+	int i=0;
+	
+	for(i=0;i<20;i++)backwards(70);
+	stop();delay_ms(250);
+     turn_left_90(40);
+	   stop();
+      delay_ms(200);
+			
+//////***********************************直走过纵线4*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d2;i++)forward(40);
+//////***********************************直走过纵线5*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线二*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);	
+///***********************************盲走*********************************************/	
+       for(i=0;i<45;i++)forward(40);
+	{	if( !line2 &line3& !line4 )forward(40); 					//*016*	
+	    else if( line2&line3&line4 )forward(40); //11111
+		else if( line1 )turn_left(40); //
+		else if( line1& line2 )turn_left(40); //
+		else if( line2& line3 )turn_left(40); //
+		else if( line5 )turn_right(40); //
+		else if( line4& line5 )turn_right(40); //
+		else if(line3&line4 )turn_right(40);
+		else forward(40);	
+    }
+	stop();delay_ms(100);
+	Servo_Mode_Config(2000,2200,1499,1499);
+    delay_s(1.65);	
+	Servo_Mode_Config(1500,1500,1499,1499);	
+}
+/*************************路径1->4****************************/
+void path_10()
+{
+	   int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+	//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);	
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+//////***********************************直走过纵线4*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d2;i++)forward(40);
+		
+//////***********************************直走过纵线5*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);	
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+/////***********************************盲走一段距离*********************************************/			
+   for(i=0;i<35;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+	  stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+        for(i=0;i<20;i++)forward(40);stop();delay_ms(250);
+	    stop();
+	
+}
+/*************************路径1->5****************************/
+void path_11()
+{
+	   int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+	   for(i=0;i<d3;i++)forward(40);	
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+//////***********************************直走过纵线4*********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if(line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+       for(i=0;i<d4;i++)forward(40);
+	   stop();delay_ms(250);
+       turn_right_90(40);
+	   stop();
+       delay_ms(200);
+///***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		
+		for(i=0;i<35;i++)
+{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+}		
+       
+}
+/*************************路径1->6****************************/
+void path_12()
+{
+	   int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<1;i++)forward(40);		
+	   stop();delay_ms(250);
+       turn_left_90(40);
+	   stop();
+       delay_ms(200);
+/////***********************************盲走一段距离*********************************************/		
+		for(i=0;i<40;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+		delay_ms(250);
+       turn_right_90(40);
+	   stop();
+}
+/*************************路径2->4****************************/
+void path_13()
+{
+	 int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);		
+		stop();
+		delay_ms(250);
+        turn_left_90(40);
+	    stop();
+/////***********************************盲走一段距离*********************************************/		
+		for(i=0;i<40;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+		delay_ms(250);
+        turn_right_90(40);
+	    stop();
+	
+}
+/*************************路径2->5****************************/
+void path_14()
+{
+	   int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);		
+
+/////***********************************盲走一段距离*********************************************/		
+		for(i=0;i<40;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+}
+/*************************路径2->6****************************/
+void path_15()
+{
+	 int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);
+		stop();
+		delay_ms(250);
+        turn_right_90(40);
+	    stop();
+		/////***********************************盲走一段距离*********************************************/		
+		for(i=0;i<40;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+		delay_ms(250);
+        turn_left_90(40);
+	    stop();
+	
+		
+}
+/*************************路径3->4****************************/
+void path_16()
+{
+	int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);
+	    stop();
+		delay_ms(250);
+        turn_right_90(40);
+	    stop();
+		delay_ms(250);
+/////***********************************盲走一段距离*********************************************/	
+		   for(i=0;i<35;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+		delay_ms(250);
+        turn_left_90(40);
+	    stop();
+		
+		
+}
+/*************************路径3->5****************************/
+void path_17()
+{
+		int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);
+	    stop();
+		delay_ms(250);
+        turn_right_90(40);
+	    stop();
+		delay_ms(250);
+/************************************过第4条纵线********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if( line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		for(i=0;i<d4;i++)forward(40);
+		stop();	delay_ms(250);
+        turn_left_90(40);
+	    stop();
+		delay_ms(250);
+/////***********************************盲走一段距离*********************************************/	
+		   for(i=0;i<20;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//
+			else forward(40);	
+		}
+		stop();
+}
+/*************************路径3->6****************************/
+void path_18()
+{
+		int i=0;
+	   delay_ms(200);
+       turn_left_180(40);
+	   stop();
+       delay_ms(200);
+//***********************************过横线2*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d1;i++)forward(40);
+/***********************************过横线1*********************************************/	
+		
+		for(;;)													
+		{
+			if( !line2 &line3& !line4 )forward(40); 					//*016*	
+			else if( line2&line3&line4 ){stop();break;}//11111
+			else if( line1 )turn_left(40); //
+			else if( line1& line2 )turn_left(40); //
+			else if( line2& line3 )turn_left(40); //
+			else if( line5 )turn_right(40); //
+			else if( line4& line5 )turn_right(40); //
+			else if(line3&line4 )turn_right(40);
+			else forward(40);
+		}
+		for(i=0;i<d3;i++)forward(40);
+	    stop();
+		delay_ms(250);
+        turn_right_90(40);
+	    stop();
+		delay_ms(250);
+/************************************过第4条纵线********************************************/
+		for(;;)//过出发区纵线-1
+		{
+			if( line2 & !line3& line4 )forward(40);
+		   else if( line2&line3&line4 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		for(i=0;i<d2;i++)forward(40);
+/////***********************************盲走一段距离*********************************************/	
+		   for(i=0;i<35;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		stop();
+		delay_ms(250);
+        turn_left_90(40);
+	    stop();
+		delay_ms(250);
+/////***********************************盲走一段距离*********************************************/	
+		   for(i=0;i<20;i++)													//走向物块前方
+		{
+			if( line2 & !line3& line4 )forward(40);
+		    else if( line1&line2&line3&line4&line5 ){stop();break;}//11111
+			else if(!line4&!line5)turn_left(40);
+			else if(!line1&!line2)turn_right(40);		
+			else if(line3& !line2)turn_right(40); //
+			else if(!line4&line3)turn_left(40);//
+			else if(line5& !line2)turn_right(40); //
+			else if(line1&!line4)turn_left(40);//	
+
+			else forward(40);	
+		}
+		
+		stop();
+}
 
 void passoneline()
 	
@@ -865,5 +1729,44 @@ void passtowline()
 			else if(line1&!line4)turn_left(250);//	
 
 			else forward(200);	
+		}
+}
+void blindtowpath(u32 distance)
+{
+	u32 i;
+	for(i=0;i<distance;i++)
+   		{
+		    if( line2 & !line3& line4 )forward(200);
+			else if(!line4&!line5)turn_left(250);
+			else if(!line1&!line2)turn_right(250);		
+			else if(line3& !line2)turn_right(250); //
+			else if(!line4&line3)turn_left(250);//
+			else if(line5& !line2)turn_right(250); //
+			else if(line1&!line4)turn_left(250);//	
+
+			else forward(200);	
+		}
+	
+}
+void blindtowpathbackwards(u32 distance)
+{
+		u32 i;
+	for(i=0;i<distance;i++)
+   		{	
+
+			 backwards(200);	
+		}
+}
+void blindonepath(u32 distance)
+{
+	u32 i;
+	for(i=0;i<distance;i++)													
+		{
+			if( !line2 &line3& !line4 )forward(200); 	
+			else if( line1 )turn_left(250); //
+			else if( line2)turn_left(250); //
+			else if( line4 )turn_right(250); //
+			else if( line5 )turn_right(250); //
+			else forward(200);
 		}
 }
